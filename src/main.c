@@ -3,7 +3,6 @@
 #include <time.h>
 
 int main(){
-
     /*
     clock_t start, end;
     double timeUsed;
@@ -14,7 +13,7 @@ int main(){
     */
 
     FILE *fp;
-    fp = fopen("test01.txt","r");
+    fp = fopen("test.txt","r");
 
     int nCidades, cargaCaminhao;
 
