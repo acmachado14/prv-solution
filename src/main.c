@@ -3,24 +3,18 @@
 #include <time.h>
 
 int main(){
-    /*
+
     clock_t start, end;
     double timeUsed;
     start = clock();
-    end = clock();
-    timeUsed = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("%fl %s", timeUsed, "\n");
-    */
 
     FILE *fp;
     fp = fopen("test.txt","r");
 
     int nCidades, cargaCaminhao;
 
-    puts("Cid");
     fscanf(fp,"%d", &nCidades);
 
-    puts("CargaCaminhao");
     fscanf(fp,"%d", &cargaCaminhao);
 
     float matCidades[nCidades][nCidades];
@@ -28,7 +22,6 @@ int main(){
     int verifcarCidade[nCidades];
     int soma = 0, qtdCaminhoes;
 
-    puts("Demanda Cidade");
     for (int i = 0; i < nCidades; i++){
         fscanf(fp,"%d", &demandaCidade[i]);
         soma = soma + demandaCidade[i];
@@ -36,7 +29,6 @@ int main(){
 
     qtdCaminhoes = soma/cargaCaminhao;
 
-    puts("Cidades Distancias");
     for (int i = 0; i < nCidades; i++){
         verifcarCidade[i] = 0;
         for (int j = 0; j < nCidades; j++){
@@ -44,6 +36,7 @@ int main(){
         }
     }
 
+    puts("---------------------SOLUCAO PRV-------------------------");
     for (int qtd = 0; qtd < qtdCaminhoes; qtd++){
         int stop = 0, atual = 0, maisProxima, cargaAtual = cargaCaminhao;
         float menor;
@@ -77,5 +70,12 @@ int main(){
         }
     }
     printf("%d", 0);
+
+    puts("\n");
+    puts("---------------------TEMPO USADO-------------------------");
+    end = clock();
+    timeUsed = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("%f %s", timeUsed, "\n");
+
     return 0;
 }
