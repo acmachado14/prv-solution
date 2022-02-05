@@ -3,52 +3,80 @@
 #include <time.h>
 
 int main(){
-/*
+
+    /*
     clock_t start, end;
     double timeUsed;
     start = clock();
     end = clock();
     timeUsed = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("%fl %s", timeUsed, "\n");
-*/
+    */
+
+    FILE *fp;
+    fp = fopen("test01.txt","r");
 
     int nCidades, cargaCaminhao;
 
-    // Cidades
-    scanf("%d", &nCidades);
+    puts("Cid");
+    fscanf(fp,"%d", &nCidades);
 
-    // Caminhoes
-    scanf("%d", &cargaCaminhao);
+    puts("CargaCaminhao");
+    fscanf(fp,"%d", &cargaCaminhao);
 
-    int tamanhoCidades = nCidades +1;
-    float matCidades[tamanhoCidades][tamanhoCidades];
-    float demandaCidade[nCidades];
+    float matCidades[nCidades][nCidades];
+    int demandaCidade[nCidades];
     int verifcarCidade[nCidades];
-    float soma = 0, qtdCaminhoes;
+    int soma = 0, qtdCaminhoes;
 
-    // Demanda por cidade
+    puts("Demanda Cidade");
     for (int i = 0; i < nCidades; i++){
-        scanf ("%f", &demandaCidade[i]);
+        fscanf(fp,"%d", &demandaCidade[i]);
         soma = soma + demandaCidade[i];
     }
 
     qtdCaminhoes = soma/cargaCaminhao;
 
-    for (int i = 0; i < tamanhoCidades; i++){
-        for (int j = 0; j < tamanhoCidades; j++){
-            matCidades[i][j] = 0;
+    puts("Cidades Distancias");
+    for (int i = 0; i < nCidades; i++){
+        verifcarCidade[i] = 0;
+        for (int j = 0; j < nCidades; j++){
+            fscanf(fp,"%f", &matCidades[i][j]);
         }
     }
 
-    // Distancias
-    for (int i = 1; i < nCidades + 1; i++){
-        for (int j = 1; j < nCidades + 1; j++){
-            printf("%s %d %s %d %s", "Distancia da cidade:",i, "com a cidade:",j, "\n");
-            scanf ("%f", &matCidades[i][j]);
+    for (int qtd = 0; qtd < qtdCaminhoes; qtd++){
+        int stop = 0, atual = 0, maisProxima, cargaAtual = cargaCaminhao;
+        float menor;
+        printf("%d", 0);
+        while (stop == 0){
+            int  aux = 0;
+            for (int j = 1; j < nCidades; j++){
+                if (j != atual){
+                    if (verifcarCidade[j] == 0){ //1 - ja preenchida, 0 - ninguem foi la
+                        if(aux == 0){
+                            menor = matCidades[atual][j];
+                            maisProxima = j;
+                            aux = 1;
+                        }
+                        if (matCidades[atual][j] < menor){
+                            menor = matCidades[atual][j];
+                            maisProxima = j;
+                        }
+                    }
+                }
+            }
+
+            if (cargaAtual >= demandaCidade[maisProxima]){
+                verifcarCidade[maisProxima] = 1;
+                cargaAtual = cargaAtual - demandaCidade[maisProxima];
+                atual = maisProxima;
+                printf("%d", maisProxima);
+            }else{
+                stop = 1;
+            }
         }
     }
-
-
-
+    printf("%d", 0);
     return 0;
 }
