@@ -3,13 +3,11 @@
 #include <time.h>
 
 int main(){
-
     clock_t start, end;
     double timeUsed;
     start = clock();
-
     FILE *fp;
-    fp = fopen("test.txt","r");
+    fp = fopen("../testes/teste10-6aux.txt","r");
 
     int nCidades, cargaCaminhao;
 
@@ -37,14 +35,14 @@ int main(){
     }
 
     puts("---------------------SOLUCAO PRV-------------------------");
-
-    int tamVetor = nCidades  + qtdCaminhoes - 2;
+    int tamVetor = nCidades  + qtdCaminhoes -2;
     int vetorDeRota[tamVetor], melhorOpcao[tamVetor], melhorValor;
     int verificador = 0, pDemanda = 1, disTotal, aux[tamVetor], i;
 
     for (int i=0;i<tamVetor;i++){
-        if (i<nCidades){
+        if (i<nCidades-1){
             vetorDeRota[i]=i+1;
+
         }else{
             vetorDeRota[i]=0;
         }
@@ -77,49 +75,53 @@ int main(){
         }
 
         disTotal = 0;
-        if (vetorDeRota[0] == 0 && vetorDeRota[tamVetor-1] == 0){
-            int possivel = 0, possivel2 = 1, cargaAtual = cargaCaminhao;
-            for(int k = 0; k < tamVetor-1; k++){
-                int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
-                if (p1 != p2){
-                    //if (){
-                    //0 1 2 3 4 0
-                    //}
-                    if (vetorDeRota[k] == 0){
-                        cargaAtual = cargaCaminhao;
-                    }
-                    if (demandaCidade[p2] <= cargaAtual){
-                        cargaAtual -= demandaCidade[p2];
-                    }else{
-                        possivel = 1;
-                    }
+        int possivel = 0, possivel2 = 1, cargaAtual = cargaCaminhao;
+        for(int k = 0; k < tamVetor-1; k++){
+            int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
+            if (p1 != p2){
+                if (vetorDeRota[k] == 0){
+                    cargaAtual = cargaCaminhao;
+                }
+                if (demandaCidade[p2] <= cargaAtual){
+                    cargaAtual -= demandaCidade[p2];
+                }else{
+                    possivel = 1;
+                }
+
+                if (k == 0){
+                    disTotal += matCidades[0][p2];
+                }else if (k == tamVetor-2){
+                    disTotal += matCidades[p1][0];
+                }else{
                     disTotal += matCidades[p1][p2];
                     possivel2 = 0;
                 }
             }
+        }
 
-            if (possivel == 0 && possivel2 == 0){
-                if (verificador == 0){
+        if (possivel == 0 && possivel2 == 0){
+            if (verificador == 0){
+                melhorValor = disTotal;
+                for(int k = 0; k < tamVetor; k++){
+                    melhorOpcao[k] = vetorDeRota[k];
+                }
+                verificador = 1;
+            }else{
+                if (disTotal < melhorValor){
                     melhorValor = disTotal;
                     for(int k = 0; k < tamVetor; k++){
                         melhorOpcao[k] = vetorDeRota[k];
-                    }
-                    verificador = 1;
-                }else{
-                    if (disTotal < melhorValor){
-                        melhorValor = disTotal;
-                        for(int k = 0; k < tamVetor; k++){
-                            melhorOpcao[k] = vetorDeRota[k];
-                        }
                     }
                 }
             }
         }
     }
 
+    printf("%d", 0);
     for (int i = 0; i < tamVetor; i++){
         printf("%d", melhorOpcao[i]);
     }
+    printf("%d", 0);
 
     puts("\n");
     puts("---------------------TEMPO USADO-------------------------");
