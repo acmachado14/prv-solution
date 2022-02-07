@@ -54,7 +54,7 @@ int main(){
     start = clock();
 
     FILE *fp;
-    fp = fopen("testeGermano.txt","r");
+    fp = fopen("test.txt","r");
 
     int nCidades, cargaCaminhao;
 
@@ -82,39 +82,69 @@ int main(){
     }
 
     puts("---------------------SOLUCAO PRV-------------------------");
-    for (int qtd = 0; qtd < qtdCaminhoes; qtd++){
-        int stop = 0, atual = 0, maisProxima, cargaAtual = cargaCaminhao;
-        float menor;
-        printf("%d", 0);
-        while (stop == 0){
-            int  aux = 0;
-            for (int j = 1; j < nCidades; j++){
-                if (j != atual){
-                    if (verifcarCidade[j] == 0){ //1 - ja preenchida, 0 - ninguem foi la
-                        if(aux == 0){
-                            menor = matCidades[atual][j];
-                            maisProxima = j;
-                            aux = 1;
-                        }
-                        if (matCidades[atual][j] < menor){
-                            menor = matCidades[atual][j];
-                            maisProxima = j;
-                        }
-                    }
-                }
+    int tamVetor = nCidades  + qtdCaminhoes + 1;
+    int vetorDeRota[tamVetor];
+    int melhorOpcao[tamVetor], melhorValor;
+
+    for (int i=0;i<tamVetor;i++){
+        if (i<=nCidades){
+            vetorDeRota[i]=i;
+        }else{
+            vetorDeRota[i]=0;
+        }
+        melhorOpcao[i] = vetorDeRota[i];
+    }
+
+
+
+    int aux[tamVetor], i;
+    for(i=0;i<tamVetor;i++){
+        aux[i]=0;
+    }
+    i= 0;
+
+    int disTotal;
+
+    while (i<tamVetor){
+        if  (aux[i] < i){
+            if (i%2){
+                int posicao = aux[i];
+                int auxTroca = vetorDeRota[posicao];
+                vetorDeRota[posicao] = vetorDeRota[i];
+                vetorDeRota[i] = auxTroca;
+            }else{
+                int posicao = 0;
+                int auxTroca = vetorDeRota[posicao];
+                vetorDeRota[posicao] = vetorDeRota[i];
+                vetorDeRota[i] = auxTroca;
             }
 
-            if (cargaAtual >= demandaCidade[maisProxima]){
-                verifcarCidade[maisProxima] = 1;
-                cargaAtual = cargaAtual - demandaCidade[maisProxima];
-                atual = maisProxima;
-                printf("%d", maisProxima);
-            }else{
-                stop = 1;
+            disTotal = 0;
+            for(int k = 0; k < tamVetor-1; k++){
+                int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
+                disTotal += matCidades[p1][p2];
             }
+            /*
+            puts("\n");
+            printf("%d", disTotal);*/
+            if (melhorValor < disTotal){
+                melhorValor = disTotal;
+                for(int k = 0; k < tamVetor; k++){
+                    melhorOpcao[k] = vetorDeRota[k];
+                }
+            }
+            aux[i] += 1;
+            i = 0;
+
+        }else{
+            aux[i]=0;
+            i += 1;
         }
     }
-    printf("%d", 0);
+
+    for (int i = 0; i < tamVetor; i++){
+        printf("%d", melhorOpcao[i]);
+    }
 
     puts("\n");
     puts("---------------------TEMPO USADO-------------------------");
