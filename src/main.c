@@ -54,7 +54,7 @@ int main(){
     start = clock();
 
     FILE *fp;
-    fp = fopen("test.txt","r");
+    fp = fopen("testeGermano.txt","r");
 
     int nCidades, cargaCaminhao;
 
@@ -82,17 +82,16 @@ int main(){
     }
 
     puts("---------------------SOLUCAO PRV-------------------------");
-    int tamVetor = nCidades  + qtdCaminhoes + 1;
+    int tamVetor = nCidades  + qtdCaminhoes;
     int vetorDeRota[tamVetor];
     int melhorOpcao[tamVetor], melhorValor;
-
+    int verificador = 0, pDemanda = 1;
     for (int i=0;i<tamVetor;i++){
-        if (i<=nCidades){
+        if (i<nCidades){
             vetorDeRota[i]=i;
         }else{
             vetorDeRota[i]=0;
         }
-        melhorOpcao[i] = vetorDeRota[i];
     }
 
 
@@ -118,27 +117,52 @@ int main(){
                 vetorDeRota[posicao] = vetorDeRota[i];
                 vetorDeRota[i] = auxTroca;
             }
-
-            disTotal = 0;
-            for(int k = 0; k < tamVetor-1; k++){
-                int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
-                disTotal += matCidades[p1][p2];
-            }
-            /*
-            puts("\n");
-            printf("%d", disTotal);*/
-            if (melhorValor < disTotal){
-                melhorValor = disTotal;
-                for(int k = 0; k < tamVetor; k++){
-                    melhorOpcao[k] = vetorDeRota[k];
-                }
-            }
             aux[i] += 1;
             i = 0;
 
         }else{
             aux[i]=0;
             i += 1;
+        }
+
+        disTotal = 0;
+        if (vetorDeRota[0] == 0 && vetorDeRota[tamVetor-1] == 0){
+            int possivel = 0, possivel2 = 1;
+            int cargaAtual = cargaCaminhao;
+            for(int k = 0; k < tamVetor-1; k++){
+                int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
+                if (p1 != p2){
+                    if (vetorDeRota[k] == 0){
+                        cargaAtual = cargaCaminhao;
+                    }
+                    if (demandaCidade[p2] <= cargaAtual){
+                        cargaAtual -= demandaCidade[p2];
+                    }else{
+                        possivel = 1;
+                    }
+                    disTotal += matCidades[p1][p2];
+                    possivel2 = 0;
+                }
+
+            }
+
+            if (possivel == 0 && possivel2 == 0){
+                if (verificador == 0){
+                    melhorValor = disTotal;
+                    for(int k = 0; k < tamVetor; k++){
+                        melhorOpcao[k] = vetorDeRota[k];
+                    }
+                    verificador = 1;
+                }else{
+                    if (disTotal < melhorValor){
+                        melhorValor = disTotal;
+                        for(int k = 0; k < tamVetor; k++){
+                            melhorOpcao[k] = vetorDeRota[k];
+                        }
+                    }
+                }
+
+            }
         }
     }
 
