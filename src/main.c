@@ -2,51 +2,6 @@
 #include <stdio.h>
 #include <time.h>
 
-/*void troca(int vetor[], int i, int j)
-{
-    int aux = vetor[i];
-    vetor[i] = vetor[j];
-    vetor[j] = aux;
-}
-*/
-
-void permuta(int tamVetor, int vetorDeRota[tamVetor])
-{
-    int aux[tamVetor], i;
-    for(i=0;i<tamVetor;i++){
-        aux[i]=0;
-    }
-
-    i= 0;
-    while (i<tamVetor){
-        if  (aux[i] < i){
-            if (i%2){
-
-                int posicao = aux[i];
-                int auxTroca = vetorDeRota[posicao];
-                vetorDeRota[posicao] = vetorDeRota[i];
-                vetorDeRota[i] = auxTroca;
-
-                for(int j = 0; j < tamVetor;j++){
-                    printf("%d", vetorDeRota[i]);
-                }
-            }else{
-                int posicao = 0;
-                int auxTroca = vetorDeRota[posicao];
-                vetorDeRota[posicao] = vetorDeRota[i];
-                vetorDeRota[i] = auxTroca;
-
-                aux[i] += 1;
-                i = 0;
-            }
-        }else{
-            aux[i]=0;
-            i += 1;
-        }
-    }
-}
-
-
 int main(){
 
     clock_t start, end;
@@ -82,10 +37,11 @@ int main(){
     }
 
     puts("---------------------SOLUCAO PRV-------------------------");
+
     int tamVetor = nCidades  + qtdCaminhoes;
-    int vetorDeRota[tamVetor];
-    int melhorOpcao[tamVetor], melhorValor;
-    int verificador = 0, pDemanda = 1;
+    int vetorDeRota[tamVetor], melhorOpcao[tamVetor], melhorValor;
+    int verificador = 0, pDemanda = 1, disTotal, aux[tamVetor], i;
+
     for (int i=0;i<tamVetor;i++){
         if (i<nCidades){
             vetorDeRota[i]=i;
@@ -94,16 +50,11 @@ int main(){
         }
     }
 
-
-
-    int aux[tamVetor], i;
     for(i=0;i<tamVetor;i++){
         aux[i]=0;
     }
+
     i= 0;
-
-    int disTotal;
-
     while (i<tamVetor){
         if  (aux[i] < i){
             if (i%2){
@@ -127,8 +78,7 @@ int main(){
 
         disTotal = 0;
         if (vetorDeRota[0] == 0 && vetorDeRota[tamVetor-1] == 0){
-            int possivel = 0, possivel2 = 1;
-            int cargaAtual = cargaCaminhao;
+            int possivel = 0, possivel2 = 1, cargaAtual = cargaCaminhao;
             for(int k = 0; k < tamVetor-1; k++){
                 int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
                 if (p1 != p2){
