@@ -9,7 +9,7 @@ int main(){
     start = clock();
 
     FILE *fp;
-    fp = fopen("testeGermano.txt","r");
+    fp = fopen("test.txt","r");
 
     int nCidades, cargaCaminhao;
 
@@ -38,13 +38,13 @@ int main(){
 
     puts("---------------------SOLUCAO PRV-------------------------");
 
-    int tamVetor = nCidades  + qtdCaminhoes;
+    int tamVetor = nCidades  + qtdCaminhoes - 2;
     int vetorDeRota[tamVetor], melhorOpcao[tamVetor], melhorValor;
     int verificador = 0, pDemanda = 1, disTotal, aux[tamVetor], i;
 
     for (int i=0;i<tamVetor;i++){
         if (i<nCidades){
-            vetorDeRota[i]=i;
+            vetorDeRota[i]=i+1;
         }else{
             vetorDeRota[i]=0;
         }
@@ -82,6 +82,9 @@ int main(){
             for(int k = 0; k < tamVetor-1; k++){
                 int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
                 if (p1 != p2){
+                    //if (){
+                    //0 1 2 3 4 0
+                    //}
                     if (vetorDeRota[k] == 0){
                         cargaAtual = cargaCaminhao;
                     }
@@ -93,7 +96,6 @@ int main(){
                     disTotal += matCidades[p1][p2];
                     possivel2 = 0;
                 }
-
             }
 
             if (possivel == 0 && possivel2 == 0){
@@ -111,7 +113,6 @@ int main(){
                         }
                     }
                 }
-
             }
         }
     }
