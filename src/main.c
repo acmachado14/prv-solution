@@ -3,13 +3,11 @@
 #include <time.h>
 
 int main(){
-
     clock_t start, end;
     double timeUsed;
     start = clock();
-
     FILE *fp;
-    fp = fopen("test.txt","r");
+    fp = fopen("../testes/teste10-6aux.txt","r");
 
     int nCidades, cargaCaminhao;
 
@@ -37,37 +35,91 @@ int main(){
     }
 
     puts("---------------------SOLUCAO PRV-------------------------");
-    for (int qtd = 0; qtd < qtdCaminhoes; qtd++){
-        int stop = 0, atual = 0, maisProxima, cargaAtual = cargaCaminhao;
-        float menor;
-        printf("%d", 0);
-        while (stop == 0){
-            int  aux = 0;
-            for (int j = 1; j < nCidades; j++){
-                if (j != atual){
-                    if (verifcarCidade[j] == 0){ //1 - ja preenchida, 0 - ninguem foi la
-                        if(aux == 0){
-                            menor = matCidades[atual][j];
-                            maisProxima = j;
-                            aux = 1;
-                        }
-                        if (matCidades[atual][j] < menor){
-                            menor = matCidades[atual][j];
-                            maisProxima = j;
-                        }
+    int tamVetor = nCidades  + qtdCaminhoes -2;
+    int vetorDeRota[tamVetor], melhorOpcao[tamVetor], melhorValor;
+    int verificador = 0, pDemanda = 1, disTotal, aux[tamVetor], i;
+
+    for (int i=0;i<tamVetor;i++){
+        if (i<nCidades-1){
+            vetorDeRota[i]=i+1;
+
+        }else{
+            vetorDeRota[i]=0;
+        }
+    }
+
+    for(i=0;i<tamVetor;i++){
+        aux[i]=0;
+    }
+
+    i= 0;
+    while (i<tamVetor){
+        if  (aux[i] < i){
+            if (i%2){
+                int posicao = aux[i];
+                int auxTroca = vetorDeRota[posicao];
+                vetorDeRota[posicao] = vetorDeRota[i];
+                vetorDeRota[i] = auxTroca;
+            }else{
+                int posicao = 0;
+                int auxTroca = vetorDeRota[posicao];
+                vetorDeRota[posicao] = vetorDeRota[i];
+                vetorDeRota[i] = auxTroca;
+            }
+            aux[i] += 1;
+            i = 0;
+
+        }else{
+            aux[i]=0;
+            i += 1;
+        }
+
+        disTotal = 0;
+        int possivel = 0, possivel2 = 1, cargaAtual = cargaCaminhao;
+        for(int k = 0; k < tamVetor-1; k++){
+            int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
+            if (p1 != p2){
+                if (vetorDeRota[k] == 0){
+                    cargaAtual = cargaCaminhao;
+                }
+                if (demandaCidade[p2] <= cargaAtual){
+                    cargaAtual -= demandaCidade[p2];
+                }else{
+                    possivel = 1;
+                }
+
+                if (k == 0){
+                    disTotal += matCidades[0][p2];
+                }else if (k == tamVetor-2){
+                    disTotal += matCidades[p1][0];
+                }else{
+                    disTotal += matCidades[p1][p2];
+                    possivel2 = 0;
+                }
+            }
+        }
+
+        if (possivel == 0 && possivel2 == 0){
+            if (verificador == 0){
+                melhorValor = disTotal;
+                for(int k = 0; k < tamVetor; k++){
+                    melhorOpcao[k] = vetorDeRota[k];
+                }
+                verificador = 1;
+            }else{
+                if (disTotal < melhorValor){
+                    melhorValor = disTotal;
+                    for(int k = 0; k < tamVetor; k++){
+                        melhorOpcao[k] = vetorDeRota[k];
                     }
                 }
             }
-
-            if (cargaAtual >= demandaCidade[maisProxima]){
-                verifcarCidade[maisProxima] = 1;
-                cargaAtual = cargaAtual - demandaCidade[maisProxima];
-                atual = maisProxima;
-                printf("%d", maisProxima);
-            }else{
-                stop = 1;
-            }
         }
+    }
+
+    printf("%d", 0);
+    for (int i = 0; i < tamVetor; i++){
+        printf("%d", melhorOpcao[i]);
     }
     printf("%d", 0);
 
