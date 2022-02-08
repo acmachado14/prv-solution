@@ -1,3 +1,4 @@
 exec:
-	gcc -o main.o src/main.c -W -Wall -ansi -pedantic
+	cd src
+	gcc -o main.exe main.c
 	./main.o
