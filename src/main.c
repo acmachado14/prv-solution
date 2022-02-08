@@ -7,7 +7,7 @@ int main(){
     double timeUsed;
     start = clock();
     FILE *fp;
-    fp = fopen("../testes/teste10-6aux.txt","r");
+    fp = fopen("../testes_adaptados/teste8-6.txt","r");
 
     int nCidades, cargaCaminhao;
 
