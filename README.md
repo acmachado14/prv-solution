@@ -3,7 +3,7 @@
   <br>
 </p>
 <div align=center>
-    <a href="#desc">Descrição</a> | <a href="#prerequisites">Pré Requisitos</a> | <a href="#running">Rodando</a> | <a href="#librariesFrameworks">Bibliotecas</a>
+    <a href="#desc">Descrição</a> | <a href="#prerequisites">Pré Requisitos</a> | <a href="#running">Rodando</a> | <a href="#librariesFrameworks">Bibliotecas</a> | <a href="#contribuidores">Contribuidores</a> 
 </div>
 <br>
 <hr>
@@ -47,3 +47,13 @@ gcc main.c
 - [time.h](https://pt.wikipedia.org/wiki/Time.h)
 - [stdio.h](https://pt.wikipedia.org/wiki/Stdio.h)
 - [stdlib.h](https://pt.wikipedia.org/wiki/Stdlib.h)
+
+- - - -
+
+<h2 id="contribuidores">
+    Contribuidores
+</h2>
+
+- [Angelo Cupertino Machado](https://github.com/acmachado14)
+- [Arthur Fernandes Bastos](https://github.com/ArthurFBastos)
+- [Jessica Cristina](https://github.com/JessCris)
