@@ -4,7 +4,7 @@
 
 int main(){
     FILE *fp;
-    fp = fopen("../testes_adaptados/teste8-2.txt","r");
+    fp = fopen("../testes/teste11-3.txt","r");
     int nCidades, cargaCaminhao;
 
     fscanf(fp,"%d", &nCidades);
@@ -67,7 +67,7 @@ int main(){
 
         disTotal = 0;
         int possivel = 0, possivel2 = 1, possivel3 = 0, possivel4 = 0, cargaAtual = cargaCaminhao;
-        if (vetorDeRota[tamVetor-1] == 0){
+        if (vetorDeRota[tamVetor-1] == 0 || vetorDeRota[0] == 0){
             possivel4 = 1;
         }else{
             for(int k = 0; k < tamVetor-1; k++){//validar as solucoes antes de compara-las
