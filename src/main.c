@@ -3,11 +3,8 @@
 #include <time.h>
 
 int main(){
-    clock_t start, end;
-    double timeUsed;
-    start = clock();
     FILE *fp;
-    fp = fopen("../testes_adaptados/teste8-6.txt","r");
+    fp = fopen("../testes_adaptados/teste8-2.txt","r");
 
     int nCidades, cargaCaminhao;
 
@@ -28,6 +25,9 @@ int main(){
         }
     }
 
+    clock_t start, end;
+    double timeUsed;
+    start = clock();
     puts("---------------------SOLUCAO PRV-------------------------");
     int tamVetor = nCidades  + qtdCaminhoes -2;//retiramos o 0 da solucao
     int vetorDeRota[tamVetor], melhorOpcao[tamVetor], melhorValor;
@@ -36,7 +36,6 @@ int main(){
     for (int i=0;i<tamVetor;i++){ //preenchendo o vetor de rotas para as permutacoes
         if (i<nCidades-1){
             vetorDeRota[i]=i+1;
-
         }else{
             vetorDeRota[i]=0;
         }
@@ -68,31 +67,38 @@ int main(){
 
 
         disTotal = 0;
-        int possivel = 0, possivel2 = 1, cargaAtual = cargaCaminhao;
-        for(int k = 0; k < tamVetor-1; k++){//validar as solucoes antes de compara-las
-            int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
-            if (p1 != p2){ //barrar entrada de 0 Consecutivos
-                if (vetorDeRota[k] == 0){ //se chegou no 0 é pq saiu mais um caminhao cheio do deposito
-                    cargaAtual = cargaCaminhao;
-                }
-                if (demandaCidade[p2] <= cargaAtual){//verificar se a demanda dos nós é maior que a do caminhao
-                    cargaAtual -= demandaCidade[p2];
-                }else{
-                    possivel = 1; //se nao for, possivel = 1
-                }
+        int possivel = 0, possivel2 = 1, possivel3 = 0, possivel4 = 0, cargaAtual = cargaCaminhao;
+        if (vetorDeRota[tamVetor-1] == 0){
+            possivel4 = 1;
+        }else{
+            for(int k = 0; k < tamVetor-1; k++){//validar as solucoes antes de compara-las
+                int p1 = vetorDeRota[k], p2 = vetorDeRota[k+1];
+                if (p1 != p2){ //barrar entrada de 0 Consecutivos
+                    if (vetorDeRota[k] == 0){ //se chegou no 0 é pq saiu mais um caminhao cheio do deposito
+                        cargaAtual = cargaCaminhao;
+                    }
+                    if (demandaCidade[p2] <= cargaAtual){//verificar se a demanda dos nós é maior que a do caminhao
+                        cargaAtual -= demandaCidade[p2];
+                    }else{
+                        possivel = 1; //se nao for, possivel = 1
+                    }
 
-                //calcular a distancia no inicio e no final, visto que retiramos os 0 do codigo pra ganhar tempo
-                if (k == 0){
-                    disTotal += matCidades[0][p2];
-                }else if (k == tamVetor-2){
-                    disTotal += matCidades[p1][0];
-                }else{//soma da distancia total
-                    disTotal += matCidades[p1][p2];
-                    possivel2 = 0;
+                    //calcular a distancia no inicio e no final, visto que retiramos os 0 do codigo pra ganhar tempo
+                    if (k == 0){
+                        disTotal += matCidades[0][p2];
+                    }else if (k == tamVetor-2){
+                        disTotal += matCidades[p1][0];
+                    }else{//soma da distancia total
+                        disTotal += matCidades[p1][p2];
+                        possivel2 = 0;
+                    }
+                }else{
+                    possivel3 = 1;
                 }
             }
         }
-        if (possivel == 0 && possivel2 == 0){ //se tudo estiver Ok
+
+        if (possivel == 0 && possivel2 == 0 && possivel3 == 0 && possivel4 == 0){ //se tudo estiver Ok
             if (verificador == 0){ // verificar se vai ser a primeira vez do for rodando
                 melhorValor = disTotal;
                 for(int k = 0; k < tamVetor; k++){
