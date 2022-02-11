@@ -5,7 +5,6 @@
 int main(){
     FILE *fp;
     fp = fopen("../testes_adaptados/teste8-2.txt","r");
-
     int nCidades, cargaCaminhao;
 
     fscanf(fp,"%d", &nCidades);
